@@ -10,3 +10,5 @@ Prices: Estimated prices based on the model year and adjusted for category (e.g.
 Stock: The available stock for each car model, randomly assigned values from 1 to 5 to simulate inventory levels.
 Purpose and Usage
 This enhanced dataset is ready for integration into a car sales platform, where users can filter and search by make, model, year, category, price, and stock availability.
+
+The original database found in: https://www.back4app.com/database/back4app/car-make-model-dataset/plymouth
