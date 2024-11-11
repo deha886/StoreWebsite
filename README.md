@@ -1,17 +1,32 @@
+### Car Products API with FastAPI and SQLAlchemy
 
+This `main.py` file provides a FastAPI application setup that connects to a MySQL database to manage car products. The application allows CRUD operations on car product data, which includes fields such as `objectId`, `Make`, `Year`, `Model`, `Category`, `Prices`, and `Stock`.
 
-### Car Model List with Estimated Prices and Stock (CSV)
+#### Key Components
 
-The CSV file, `Car_Model_List_with_Prices_Cleaned_With_Stock.csv`, provides a structured dataset of car makes, models, years, categories, estimated prices, and available stock quantities, ideal for car sales applications.
+1. **Database Configuration**:
+   - Uses SQLAlchemy to connect to a MySQL database.
+   - Reflects the `Products` table from the database, allowing interaction with an existing schema.
 
-#### Columns:
-- **objectId**: A unique identifier for each car entry.
-- **Make**: The car manufacturer (e.g., Ford, Toyota).
-- **Year**: The model year of the car.
-- **Model**: The specific model name within each make.
-- **Category**: The type of vehicle (e.g., SUV, Sedan, Coupe).
-- **Prices**: Estimated prices based on the model year and adjusted for category (e.g., SUVs typically have higher price ranges).
-- **Stock**: The available stock for each car model, randomly assigned values from 1 to 5 to simulate inventory levels.
+2. **Product Model**:
+   - SQLAlchemy’s `Table` reflection method is used to create a model for the `Products` table, enabling operations on the database without redefining the schema in code.
 
-#### Purpose and Usage
-This enhanced dataset is ready for integration into a car sales platform, where users can filter and search by make, model, year, category, price, and stock availability.
+3. **Pydantic Model**:
+   - `ProductBase`: A Pydantic model defining the structure of data for API requests and responses, ensuring data validation.
+
+4. **API Endpoints**:
+   - **Root** (`/`): A test route to confirm the API is connected to MySQL.
+   - **Get All Products** (`/products/`): Retrieves a list of all car products.
+   - **Get Product by objectId** (`/products/{objectId}`): Fetches details of a specific product by its `objectId`.
+   - **Create Product** (`/products/`): Adds a new car product to the database.
+
+5. **Running the Application**:
+   - To run the FastAPI application, use `uvicorn` with the command:
+     ```bash
+     uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+     ```
+   - The application will be accessible at `http://127.0.0.1:8000/`.
+
+#### Usage
+
+This API serves as a backend service for managing car product data, suitable for inventory management systems or car sales platforms. The setup allows easy database access, data validation, and a RESTful interface to integrate with frontend applications.
