@@ -126,3 +126,5 @@ To contribute:
 3. Commit your changes (`git commit -m 'Add your feature'`).
 4. Push the branch (`git push origin feature/YourFeature`).
 5. Open a Pull Request for review.
+
+---
