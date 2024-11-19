@@ -1,7 +1,3 @@
-Here's a README text based on the project structure and modules visible in the image:
-
----
-
 # E-commerce Platform Project
 
 This repository hosts the code for a comprehensive **E-commerce Platform**. The project integrates backend, frontend, and database functionalities to create a fully functional online store. It includes features such as user authentication, product listing, cart management, payment processing, and more, aiming to deliver a seamless shopping experience.
