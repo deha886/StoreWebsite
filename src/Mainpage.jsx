@@ -61,7 +61,21 @@ const Mainpage = () => {
     }
   ];
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (car) => {
+    const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItem = savedCart.find(item => item.id === car.id);
+    
+    if (existingItem) {
+      const updatedCart = savedCart.map(item =>
+        item.id === car.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    } else {
+      const newCart = [...savedCart, { ...car, quantity: 1 }];
+      localStorage.setItem('cart', JSON.stringify(newCart));
+    }
     setCartCount(prev => prev + 1);
   };
 
@@ -92,7 +106,7 @@ const Mainpage = () => {
             <div className="nav-icons">
               <button onClick={() => navigate('/login')} className="icon-button">👤</button>
               <div className="cart-wrapper">
-                <button className="icon-button">🛒</button>
+                <button onClick={() => navigate('/cart')} className="icon-button">🛒</button>
                 {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
               </div>
             </div>
@@ -131,7 +145,7 @@ const Mainpage = () => {
                     <h3 className="car-title">{car.title}</h3>
                     <p className="car-category">{car.category}</p>
                     <p className="car-price">{car.price}</p>
-                    <button onClick={handleAddToCart} className="add-to-cart-btn">
+                    <button onClick={() => handleAddToCart(car)} className="add-to-cart-btn">
                       Add to Cart
                     </button>
                   </div>
