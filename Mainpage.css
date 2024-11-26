@@ -3,16 +3,6 @@
   background-color: #f9fafb;
 }
 
-.login-logo {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  height: 160px;
-  width: auto;
-  cursor: pointer;
-}
-
-/* Navigation */
 .nav {
   background-color: #1e293b;
   padding: 1rem;
@@ -63,8 +53,13 @@
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   border: 1px solid #4a5568;
-  background-color: white;
-  color: black;
+  background-color: white !important;
+  color: black !important;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #043b4f;
 }
 
 .search-input::placeholder {
@@ -85,7 +80,45 @@
   padding: 0.25rem;
 }
 
-/* Main Content */
+.cart-wrapper {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.sort-section {
+  margin: 1rem 0 2rem 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sort-select {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid #4a5568;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  min-width: 200px;
+  font-size: 0.9rem;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #043b4f;
+}
+
 .main {
   max-width: 1280px;
   margin: 0 auto;
@@ -99,7 +132,6 @@
   margin-bottom: 1.5rem;
 }
 
-/* Categories */
 .categories-section {
   margin-bottom: 3rem;
 }
@@ -131,7 +163,6 @@
   color: #2d3748;
 }
 
-/* Cars Grid */
 .cars-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -170,9 +201,10 @@
 }
 
 .car-details {
-  position: relative;
   padding: 1.5rem;
+  position: relative;
   padding-bottom: 60px;
+  text-align: center;
 }
 
 .car-title {
@@ -194,12 +226,12 @@
   margin-bottom: 0.5rem;
 }
 
-/* New styles for rating and stock */
 .car-rating {
   color: #f59e0b;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem;
 }
 
@@ -219,16 +251,20 @@
 }
 
 .add-to-cart-btn {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
+  width: 50%;
+  margin: 15px auto;
+  padding: 8px 16px;
   background-color: #043b4f;
   color: white;
-  padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  display: block;
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .add-to-cart-btn:hover {
@@ -238,26 +274,10 @@
 .add-to-cart-btn.disabled {
   background-color: #cbd5e0;
   cursor: not-allowed;
+  width: 50%;
+  margin: 15px auto;
 }
 
-.cart-wrapper {
-  position: relative;
-}
-
-.cart-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: red;
-  color: white;
-  border-radius: 50%;
-  padding: 2px 6px;
-  font-size: 12px;
-  min-width: 18px;
-  text-align: center;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
   .nav-content {
     flex-direction: column;
@@ -276,6 +296,14 @@
   .nav-right {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .sort-section {
+    justify-content: stretch;
+  }
+  
+  .sort-select {
+    width: 100%;
   }
 }
 
