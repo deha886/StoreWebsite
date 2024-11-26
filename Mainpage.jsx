@@ -6,6 +6,7 @@ import logo from './assets/Logo.png';
 const Mainpage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [cartCount, setCartCount] = useState(0);
+  const [sortBy, setSortBy] = useState('default');
   const navigate = useNavigate();
   
   const categories = [
@@ -104,7 +105,7 @@ const Mainpage = () => {
   ];
 
   const handleAddToCart = (car, e) => {
-    e.stopPropagation(); // Prevent navigation when clicking the button
+    e.stopPropagation();
     if (car.stock === 0) {
       alert('This product is out of stock');
       return;
@@ -127,10 +128,30 @@ const Mainpage = () => {
     setCartCount(prev => prev + 1);
   };
 
-  const filteredCars = cars.filter(car =>
-    car.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    car.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const getFilteredAndSortedCars = () => {
+    let filtered = cars.filter(car =>
+      car.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      car.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      car.category.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    switch(sortBy) {
+      case 'price-low':
+        return filtered.sort((a, b) => 
+          parseFloat(a.price.replace('$', '').replace(',', '')) - 
+          parseFloat(b.price.replace('$', '').replace(',', ''))
+        );
+      case 'price-high':
+        return filtered.sort((a, b) => 
+          parseFloat(b.price.replace('$', '').replace(',', '')) - 
+          parseFloat(a.price.replace('$', '').replace(',', ''))
+        );
+      case 'rating':
+        return filtered.sort((a, b) => b.rating - a.rating);
+      default:
+        return filtered;
+    }
+  };
 
   return (
     <div className="store-container">
@@ -145,7 +166,7 @@ const Mainpage = () => {
             <div className="search-wrapper">
               <input 
                 type="search" 
-                placeholder="Search cars..." 
+                placeholder="Search cars by name or description..." 
                 className="search-input"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -163,6 +184,19 @@ const Mainpage = () => {
       </nav>
 
       <main className="main">
+        <section className="sort-section">
+          <select 
+            value={sortBy} 
+            onChange={(e) => setSortBy(e.target.value)}
+            className="sort-select"
+          >
+            <option value="default">Default Sort</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Sort by Popularity</option>
+          </select>
+        </section>
+
         <section className="categories-section">
           <h2 className="section-title">Categories</h2>
           <div className="categories-grid">
@@ -179,7 +213,7 @@ const Mainpage = () => {
         <section className="cars-section">
           <h2 className="section-title">Featured Vehicles</h2>
           <div className="cars-grid">
-            {filteredCars.map((car) => (
+            {getFilteredAndSortedCars().map((car) => (
               <div 
                 key={car.id} 
                 className="car-card"
