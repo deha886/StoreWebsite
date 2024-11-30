@@ -1,4 +1,3 @@
-// Cart.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Cart.css';
@@ -59,14 +58,14 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
-      <nav className="cart-nav">
+      <div className="back-link-wrapper">
         <button 
           onClick={() => navigate('/main')} 
-          className="back-button"
+          className="back-link"
         >
-          ← Back to Main
+          ← Back to Store
         </button>
-      </nav>
+      </div>
 
       <h1 className="cart-title">Your Cart</h1>
       
