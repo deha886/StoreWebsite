@@ -1,0 +1,20 @@
+name: Update Jira on Pull Request
+
+on:
+  pull_request:
+    types: [opened, reopened, closed]
+
+jobs:
+  update-jira:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send update to Jira
+        env:
+          JIRA_BASE_URL: "https://cs308-22.atlassian.net"
+          JIRA_API_TOKEN: ${{ secrets.SECRET }}
+          JIRA_USER_EMAIL: "deha@sabanciuniv.edu"
+        run: |
+          curl -X POST -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{"transition": {"id": "31"}}' \
+          "$JIRA_BASE_URL/rest/api/3/issue/CS308-123/transitions"
