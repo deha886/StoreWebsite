@@ -16,6 +16,16 @@ const Cart = () => {
     nameOnCard: ''
   });
 
+  const [billingInfo, setBillingInfo] = useState({
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: ''
+  });
+
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Assume user is logged in for now
+
   const handleQuantityChange = (id, change) => {
     setCartItems(items => 
       items.map(item => 
@@ -39,10 +49,14 @@ const Cart = () => {
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
-    alert('Payment successful!');
-    setCartItems([]);
-    localStorage.removeItem('cart');
-    navigate('/main');
+    if (isLoggedIn) {
+      alert('Payment successful!');
+      setCartItems([]);
+      localStorage.removeItem('cart');
+      navigate('/main');
+    } else {
+      alert('Please log in to complete the purchase.');
+    }
   };
 
   const calculateTotal = () => {
@@ -74,23 +88,25 @@ const Cart = () => {
           {cartItems.length === 0 ? (
             <p className="empty-cart">Your cart is empty</p>
           ) : (
-            cartItems.map(item => (
-              <div key={item.id} className="cart-item">
-                <img src={item.image} alt={item.title} className="item-image" />
-                <div className="item-details">
-                  <h3>{item.title}</h3>
-                  <p>{item.price}</p>
-                  <div className="quantity-controls">
-                    <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
+            <div>
+              {cartItems.map(item => (
+                <div key={item.id} className="cart-item">
+                  <img src={item.image} alt={item.title} className="item-image" />
+                  <div className="item-details">
+                    <h3>{item.title}</h3>
+                    <p>{item.price}</p>
+                    <div className="quantity-controls">
+                      <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
+                      <span>{item.quantity}</span>
+                      <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
+                    </div>
+                    <button onClick={() => removeItem(item.id)} className="remove-btn">
+                      Remove
+                    </button>
                   </div>
-                  <button onClick={() => removeItem(item.id)} className="remove-btn">
-                    Remove
-                  </button>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
 
@@ -113,22 +129,22 @@ const Cart = () => {
             </div>
 
             <div className="payment-section">
-              <h2>Payment Details</h2>
+              <h2>Billing Information</h2>
               <form onSubmit={handlePaymentSubmit} className="payment-form">
-                <div className="form-group">
-                  <label>Card Number</label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="1234 5678 9012 3456"
-                    maxLength="19"
-                    onChange={(e) => setPaymentInfo({
-                      ...paymentInfo,
-                      cardNumber: e.target.value
-                    })}
-                  />
-                </div>
                 <div className="form-row">
+                  <div className="form-group">
+                    <label>Card Number</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="1234 5678 9012 3456"
+                      maxLength="19"
+                      onChange={(e) => setPaymentInfo({
+                        ...paymentInfo,
+                        cardNumber: e.target.value
+                      })}
+                    />
+                  </div>
                   <div className="form-group">
                     <label>Expiry Date</label>
                     <input
@@ -155,21 +171,83 @@ const Cart = () => {
                       })}
                     />
                   </div>
+                  <div className="form-group">
+                    <label>Name on Card</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="John Doe"
+                      onChange={(e) => setPaymentInfo({
+                        ...paymentInfo,
+                        nameOnCard: e.target.value
+                      })}
+                    />
+                  </div>
                 </div>
                 <div className="form-group">
-                  <label>Name on Card</label>
+                  <label>Address</label>
                   <input
                     required
                     type="text"
-                    placeholder="John Doe"
-                    onChange={(e) => setPaymentInfo({
-                      ...paymentInfo,
-                      nameOnCard: e.target.value
+                    placeholder="123 Main St"
+                    onChange={(e) => setBillingInfo({
+                      ...billingInfo,
+                      address: e.target.value
                     })}
                   />
                 </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>City</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="New York"
+                      onChange={(e) => setBillingInfo({
+                        ...billingInfo,
+                        city: e.target.value
+                      })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>State</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="NY"
+                      onChange={(e) => setBillingInfo({
+                        ...billingInfo,
+                        state: e.target.value
+                      })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Zip</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="10001"
+                      onChange={(e) => setBillingInfo({
+                        ...billingInfo,
+                        zip: e.target.value
+                      })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Country</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="United States"
+                      onChange={(e) => setBillingInfo({
+                        ...billingInfo,
+                        country: e.target.value
+                      })}
+                    />
+                  </div>
+                </div>
                 <button type="submit" className="checkout-button">
-                  Complete Purchase
+                  Make Payment
                 </button>
               </form>
             </div>
