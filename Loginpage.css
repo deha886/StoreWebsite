@@ -1,0 +1,96 @@
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  
+  .login-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    width: 400px;
+  }
+  
+  .login-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .form-input {
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .login-button {
+    background-color: #043b4f;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 24px;
+    transition: background-color 0.3s;
+  }
+  
+  .login-button:hover {
+    background-color: #043b4f;
+  }
+
+  /* Back to Store button in the top right */
+.back-to-store-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  color: #043b4f; /* Button color */
+  font-size: 24px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.back-to-store-button:hover {
+  color: #043b4f; /* Hover color */
+}
+
+/* Motto text under the title */
+.login-motto {
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+
+/* Adjust the logo size */
+.login-logo {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  height: 160px; /* Increase height */
+  width: auto;   /* Keeps aspect ratio */
+  cursor: pointer;
+}
