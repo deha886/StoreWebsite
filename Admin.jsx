@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import './Admin.css';
 
 const Admin = () => {
-  // Aktif sekmeyi takip etmek için state
   const [activeTab, setActiveTab] = useState('products');
+  const [reviewFilter, setReviewFilter] = useState('pending');
   
-  // Örnek ürün verisi
   const [products, setProducts] = useState([
     {
       id: 1,
@@ -20,7 +19,6 @@ const Admin = () => {
     }
   ]);
 
-  // Örnek sipariş verisi
   const [orders, setOrders] = useState([
     {
       id: "99952",
@@ -34,19 +32,27 @@ const Admin = () => {
     }
   ]);
 
-  // Örnek yorum verisi
   const [reviews, setReviews] = useState([
     {
       id: 1,
       productId: 1,
+      productName: "Tesla Model S",
       customerName: "Jane Smith",
-      rating: 4.5,
       comment: "Great car, excellent performance!",
+      date: "2024-02-15",
       status: "pending"
+    },
+    {
+      id: 2,
+      productId: 1,
+      productName: "Tesla Model S",
+      customerName: "John Doe",
+      comment: "Amazing experience with this car!",
+      date: "2024-02-14",
+      status: "approved"
     }
   ]);
 
-  // Yeni ürün ekleme state'i
   const [newProduct, setNewProduct] = useState({
     name: '',
     model: '',
@@ -58,7 +64,6 @@ const Admin = () => {
     distributor: ''
   });
 
-  // Form handler'ları
   const handleProductSubmit = (e) => {
     e.preventDefault();
     setProducts([...products, { ...newProduct, id: products.length + 1 }]);
@@ -83,6 +88,12 @@ const Admin = () => {
   const handleReviewApproval = (reviewId) => {
     setReviews(reviews.map(review =>
       review.id === reviewId ? { ...review, status: 'approved' } : review
+    ));
+  };
+
+  const handleReviewRejection = (reviewId) => {
+    setReviews(reviews.map(review =>
+      review.id === reviewId ? { ...review, status: 'rejected' } : review
     ));
   };
 
@@ -257,31 +268,62 @@ const Admin = () => {
         {activeTab === 'reviews' && (
           <div className="reviews-section">
             <h2>Review Management</h2>
+            <div className="reviews-status-tabs">
+              <button 
+                className={`status-tab ${reviewFilter === 'pending' ? 'active' : ''}`}
+                onClick={() => setReviewFilter('pending')}
+              >
+                Pending Reviews
+              </button>
+              <button 
+                className={`status-tab ${reviewFilter === 'approved' ? 'active' : ''}`}
+                onClick={() => setReviewFilter('approved')}
+              >
+                Approved Reviews
+              </button>
+              <button 
+                className={`status-tab ${reviewFilter === 'rejected' ? 'active' : ''}`}
+                onClick={() => setReviewFilter('rejected')}
+              >
+                Rejected Reviews
+              </button>
+            </div>
             <div className="reviews-list">
-              {reviews.map(review => (
-                <div key={review.id} className="review-card">
-                  <div className="review-header">
-                    <h3>{review.customerName}</h3>
-                    <div className="review-rating">
-                      {'★'.repeat(Math.floor(review.rating))}
-                      {'☆'.repeat(5 - Math.floor(review.rating))}
-                      <span>({review.rating})</span>
+              {reviews
+                .filter(review => review.status === reviewFilter)
+                .map(review => (
+                  <div key={review.id} className="review-card">
+                    <div className="review-header">
+                      <h3>{review.productName}</h3>
+                      <span className="review-date">{review.date}</span>
+                    </div>
+                    <div className="review-content">
+                      <p className="reviewer">
+                        <strong>Customer:</strong> {review.customerName}
+                      </p>
+                      <p className="review-text">{review.comment}</p>
+                    </div>
+                    {review.status === 'pending' && (
+                      <div className="review-actions">
+                        <button 
+                          onClick={() => handleReviewApproval(review.id)}
+                          className="approve-btn"
+                        >
+                          Approve
+                        </button>
+                        <button 
+                          onClick={() => handleReviewRejection(review.id)}
+                          className="reject-btn"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    )}
+                    <div className={`review-status ${review.status}`}>
+                      {review.status.charAt(0).toUpperCase() + review.status.slice(1)}
                     </div>
                   </div>
-                  <p className="review-comment">{review.comment}</p>
-                  {review.status === 'pending' && (
-                    <button
-                      onClick={() => handleReviewApproval(review.id)}
-                      className="approve-btn"
-                    >
-                      Approve Review
-                    </button>
-                  )}
-                  <span className={`review-status ${review.status}`}>
-                    {review.status.charAt(0).toUpperCase() + review.status.slice(1)}
-                  </span>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         )}
