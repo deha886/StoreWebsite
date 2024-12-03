@@ -181,76 +181,103 @@
   }
   
   /* Reviews Section */
-  .reviews-section {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .review-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 1rem;
-    position: relative;
-  }
-  
-  .review-header {
+  .reviews-status-tabs {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 1rem;
   }
   
-  .review-rating {
-    color: #f6ad55;
-    font-size: 1.1rem;
-  }
-  
-  .review-comment {
-    color: #4a5568;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-  }
-  
-  .approve-btn {
-    background: #043b4f;
-    color: white;
+  .status-tab {
     padding: 0.5rem 1rem;
     border: none;
+    background: none;
+    font-size: 1rem;
+    color: #4a5568;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1rem;
+  }
+  
+  .status-tab.active {
+    color: #043b4f;
+    border-bottom-color: #043b4f;
+    font-weight: 600;
+  }
+  
+  /* Updated Review Card styles */
+  .review-content {
+    margin: 1rem 0;
+  }
+  
+  .reviewer {
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+  }
+  
+  .review-text {
+    color: #2d3748;
+    line-height: 1.6;
+  }
+  
+  .review-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .approve-btn,
+  .reject-btn {
+    padding: 0.5rem 1rem;
     border-radius: 4px;
+    font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
   }
   
+  .approve-btn {
+    background-color: #043b4f;
+    color: white;
+    border: none;
+  }
+  
   .approve-btn:hover {
-    background: #065d7a;
+    background-color: #065d7a;
+  }
+  
+  .reject-btn {
+    background-color: white;
+    color: #dc2626;
+    border: 1px solid #dc2626;
+  }
+  
+  .reject-btn:hover {
+    background-color: #dc2626;
+    color: white;
   }
   
   .review-status {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.25rem 0.75rem;
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
     border-radius: 4px;
     font-size: 0.875rem;
+    margin-top: 1rem;
   }
   
   .review-status.pending {
-    background: #fef3c7;
+    background-color: #fef3c7;
     color: #92400e;
   }
   
   .review-status.approved {
-    background: #f0fff4;
-    color: #2f855a;
+    background-color: #dcfce7;
+    color: #166534;
   }
   
   .review-status.rejected {
-    background: #fff5f5;
-    color: #c53030;
+    background-color: #fee2e2;
+    color: #dc2626;
   }
   
   /* Responsive Design */
