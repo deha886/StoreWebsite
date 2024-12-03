@@ -1,134 +1,70 @@
-# E-commerce Platform Project
+# Getting Started with Create React App
 
-This repository hosts the code for a comprehensive **E-commerce Platform**. The project integrates backend, frontend, and database functionalities to create a fully functional online store. It includes features such as user authentication, product listing, cart management, payment processing, and more, aiming to deliver a seamless shopping experience.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
----
+## Available Scripts
 
-## Table of Contents
+In the project directory, you can run:
 
-- [Features](#features)
-- [Project Structure](#project-structure)
-- [Modules Overview](#modules-overview)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+### `npm start`
 
----
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### Features
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-This platform offers a wide range of features to support a robust online shopping experience:
+### `npm test`
 
-- **User Authentication**: Allows users to register, log in, and manage their accounts.
-- **Product Management**: Supports adding, categorizing, and updating product information.
-- **Cart & Wishlist**: Users can add items to their cart or wishlist for future purchases.
-- **Order Management**: Manages order processing, including payment, refunds, and order history.
-- **Reviews and Ratings**: Allows customers to review and rate products.
-- **Admin Panel**: Provides administrators with tools to manage users, products, and orders.
-- **Notifications**: Keeps users informed about their orders, promotions, and updates.
-- **Search and Filter**: Allows users to find products through search and sort functions.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
----
+### `npm run build`
 
-### Project Structure
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The project is divided into different sections, each handling specific functionalities:
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- **Backend**: Manages server-side logic, including authentication, data management, and notifications.
-- **Frontend**: The user interface where customers interact with the platform, such as browsing products, adding items to the cart, and checking out.
-- **Database**: Contains structured data for managing users, products, orders, and other critical data.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
----
+### `npm run eject`
 
-### Modules Overview
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-The following are the main modules in this project, each focusing on specific functionalities:
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-1. **Database**
-   - **SCMAIN-10**: Database User Admin - Handles user roles and permissions.
-   - **SCMAIN-46**: Product Database - Manages product information.
-   - **SCMAIN-37**: Customer Database - Stores customer data.
-   - **SCMAIN-55**: Refund Requests - Manages refund process.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-2. **Backend**
-   - **SCMAIN-3**: Backend Login Page - User authentication management.
-   - **SCMAIN-33**: Customer Purchase - Handles purchase transactions.
-   - **SCMAIN-38**: Notifications - Sends updates to users.
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-3. **Frontend**
-   - **SCMAIN-4**: Theme Plugin Setup - Configures UI themes.
-   - **SCMAIN-36**: Product Reviews - Allows users to post reviews.
-   - **SCMAIN-48**: Wishlist - Users can save items for later purchase.
+## Learn More
 
-4. **Infrastructure**
-   - **SCMAIN-5**: Infrastructure Setup - Sets up basic backend and frontend infrastructure.
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-5. **Payment**
-   - **SCMAIN-42**: Payment Page - Mockup and payment processing setup.
-   - **SCMAIN-43**: Add to Cart - Manages cart functionalities.
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-6. **Product Listing**
-   - **SCMAIN-9**: Product Classification - Organizes products into categories.
-   - **SCMAIN-31**: Category Management - Manages product categories.
+### Code Splitting
 
----
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Installation
+### Analyzing the Bundle Size
 
-To install and run this project locally:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-1. Clone the repository:
+### Making a Progressive Web App
 
-   ```bash
-   git clone https://github.com/yourusername/yourrepository.git
-   cd yourrepository
-   ```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-2. Install dependencies:
+### Advanced Configuration
 
-   ```bash
-   npm install
-   ```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-3. Set up the database:
+### Deployment
 
-   - Ensure you have a database setup, and configure the database connection in the environment settings (e.g., `.env` file).
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-4. Start the server:
+### `npm run build` fails to minify
 
-   ```bash
-   npm start
-   ```
-
----
-
-### Usage
-
-After starting the server, you can access various features through the frontend:
-
-- **Login Page**: `/login` - User login and registration.
-- **Product Listing**: `/products` - View available products.
-- **Wishlist**: `/wishlist` - Access saved items.
-- **Cart Management**: `/cart` - View and manage items in the cart.
-- **Order History**: `/order-history` - View past orders.
-
-*Note: Adjust the paths to match the actual routes in the project.*
-
----
-
-### Contributing
-
-To contribute:
-
-1. Fork the project.
-2. Create a branch for your feature (`git checkout -b feature/YourFeature`).
-3. Commit your changes (`git commit -m 'Add your feature'`).
-4. Push the branch (`git push origin feature/YourFeature`).
-5. Open a Pull Request for review.
-
----
-
-### License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
