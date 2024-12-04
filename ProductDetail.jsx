@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ProductDetail.css';
 import logo from './assets/Logo.png';
@@ -6,66 +6,107 @@ import logo from './assets/Logo.png';
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  const car = {
-    id: 1,
-    title: "Tesla Model S",
-    category: "Electric Vehicles",
-    price: "$79,999",
-    image: "/api/placeholder/800/500",
-    stock: 3,
-    rating: 4.5,
-    description: "The Tesla Model S is an all-electric luxury sedan known for its long range and high performance. Features include autopilot capabilities, luxurious interior, and instant acceleration.",
-    specs: {
-      range: "405 miles",
-      acceleration: "0-60 mph in 3.1s",
-      topSpeed: "155 mph",
-      power: "670 hp",
-      drive: "All-Wheel Drive"
-    },
-    reviews: [
-      { id: 1, user: "John D.", rating: 5, date: "2024-02-15", comment: "Amazing car, excellent performance!" },
-      { id: 2, user: "Sarah M.", rating: 4, date: "2024-02-10", comment: "Great car but expensive maintenance" },
-      { id: 3, user: "Mike R.", rating: 4.5, date: "2024-02-05", comment: "Best car I've ever owned. The autopilot feature is incredible." }
-    ]
-  };
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [newReview, setNewReview] = useState('');
+  const [userRating, setUserRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/products/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch product data');
+        }
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) { 
+        console.error('Error fetching product data:', error);
+        alert('Failed to load product details. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   const handleAddToCart = () => {
-    if (car.stock === 0) {
+    if (product.Stock === 0) {
       alert('This product is out of stock');
       return;
     }
 
     const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItem = savedCart.find(item => item.id === car.id);
-    
+    const existingItem = savedCart.find(item => item.objectId === product.objectId);
+
     if (existingItem) {
       const updatedCart = savedCart.map(item =>
-        item.id === car.id
+        item.objectId === product.objectId
           ? { ...item, quantity: item.quantity + 1 }
           : item
       );
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     } else {
-      const newCart = [...savedCart, { ...car, quantity: 1 }];
+      const newCart = [...savedCart, { ...product, quantity: 1 }];
       localStorage.setItem('cart', JSON.stringify(newCart));
     }
-    
+
     alert('Added to cart successfully!');
   };
 
-  // Ortalama puanı hesapla
-  const averageRating = car.reviews.reduce((acc, review) => acc + review.rating, 0) / car.reviews.length;
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/products/${id}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rating: userRating, comment: newReview, status: 'pending' }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to submit review');
+      }
+      alert('Your review has been submitted for admin approval.');
+      setNewReview('');
+      setUserRating(0);
+      setShowReviewForm(false);
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Failed to submit review. Please try again.');
+    }
+  };
+
+
+
+
+  const averageRating = product?.reviews?.reduce((acc, review) => acc + review.rating, 0) / (product?.reviews?.length || 1);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (!product) {
+    return <div className="error">Product not found.</div>;
+  }
 
   return (
     <div className="product-detail-container">
       <nav className="nav">
         <div className="nav-content">
           <div className="nav-left">
-            <img src={logo} alt="WheelCar Logo" className="nav-logo" onClick={() => navigate('/main')} />
+            <img
+              src={logo}
+              alt="WheelCar Logo"
+              className="nav-logo"
+              onClick={() => navigate('/main')}
+            />
             <h1 className="nav-title">WheelCar</h1>
           </div>
-          
+
           <div className="nav-right">
             <div className="nav-icons">
               <button onClick={() => navigate('/login')} className="icon-button">👤</button>
@@ -77,69 +118,100 @@ const ProductDetail = () => {
 
       <div className="product-content">
         <div className="product-left">
-          <img src={car.image} alt={car.title} className="product-image" />
+          <img src={product.Photo} alt={product.Model} className="product-image" />
         </div>
 
         <div className="product-right">
-          <h1 className="product-title">{car.title}</h1>
-          
+          <h1 className="product-title">{`${product.Make} ${product.Model}`}</h1>
+
           <div className="product-meta">
-            <span className="product-category">{car.category}</span>
+            <span className="product-category">{product.Category}</span>
             <div className="product-rating">
-              {'★'.repeat(Math.floor(averageRating))}
-              {'☆'.repeat(5 - Math.floor(averageRating))}
-              <span className="rating-number">({averageRating.toFixed(1)})</span>
+              {'★'.repeat(Math.floor(product.rating || 0))}
+              {'☆'.repeat(5 - Math.floor(product.rating || 0))}
+              <span className="rating-number">({product.rating || 'N/A'})</span>
             </div>
           </div>
 
-          <p className="product-price">{car.price}</p>
-          
-          <div className={`stock-status ${car.stock === 0 ? 'out-of-stock' : ''}`}>
-            {car.stock === 0 ? 'Out of Stock' : `${car.stock} in stock`}
+          <p className="product-price">${product.Prices}</p>
+
+          <div
+            className={`stock-status ${product.Stock === 0 ? 'out-of-stock' : ''}`}
+          >
+            {product.Stock === 0 ? 'Out of Stock' : `${product.Stock} in stock`}
           </div>
 
-          <p className="product-description">{car.description}</p>
+          <p className="product-description">{product.description || 'No description available.'}</p>
 
           <div className="product-specs">
             <h2>Specifications</h2>
             <div className="specs-grid">
               <div className="spec-item">
-                <span className="spec-label">Range:</span>
-                <span className="spec-value">{car.specs.range}</span>
+                <span className="spec-label">Year:</span>
+                <span className="spec-value">{product.Year}</span>
               </div>
-              <div className="spec-item">
-                <span className="spec-label">Acceleration:</span>
-                <span className="spec-value">{car.specs.acceleration}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Top Speed:</span>
-                <span className="spec-value">{car.specs.topSpeed}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Power:</span>
-                <span className="spec-value">{car.specs.power}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Drive:</span>
-                <span className="spec-value">{car.specs.drive}</span>
-              </div>
+              {/* Add more specs if available */}
             </div>
           </div>
 
-          <button 
+          <button
             onClick={handleAddToCart}
-            className={`add-to-cart-btn ${car.stock === 0 ? 'disabled' : ''}`}
-            disabled={car.stock === 0}
+            className={`add-to-cartbtn ${product.Stock === 0 ? 'disabled' : ''}`}
+            disabled={product.Stock === 0}
           >
-            {car.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+            {product.Stock === 0 ? 'Out of Stock' : 'Add to Cart'}
           </button>
         </div>
       </div>
 
+      {/* Rating Section */}
+      <div className="rating-section">
+        <h2>Rate This Product</h2>
+        <div className="stars-wrapper">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span
+              key={star}
+              className={`star ${star <= (hoveredRating || userRating) ? 'active' : ''}`}
+              onClick={() => setUserRating(star)}
+              onMouseEnter={() => setHoveredRating(star)}
+              onMouseLeave={() => setHoveredRating(0)}
+            >
+              ★
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Reviews Section */}
       <div className="reviews-section">
-        <h2>Customer Reviews</h2>
+        <div className="reviews-header">
+          <h2>Customer Reviews</h2>
+          <button
+            className="write-review-btn"
+            onClick={() => setShowReviewForm(!showReviewForm)}
+          >
+            Write a Review
+          </button>
+        </div>
+
+        {showReviewForm && (
+          <form onSubmit={handleSubmitReview} className="review-form">
+            <textarea
+              value={newReview}
+              onChange={(e) => setNewReview(e.target.value)}
+              placeholder="Write your review here..."
+              required
+              minLength={10}
+              maxLength={500}
+            />
+            <button type="submit" className="submit-review-btn">
+              Submit Review
+            </button>
+          </form>
+        )}
+
         <div className="reviews-list">
-          {car.reviews.map(review => (
+          {product.reviews?.map((review) => (
             <div key={review.id} className="review-item">
               <div className="review-header">
                 <span className="reviewer-name">{review.user}</span>
