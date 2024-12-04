@@ -1,101 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Admin.css';
 
 const Admin = () => {
-  // Aktif sekmeyi takip etmek için state
-  const [activeTab, setActiveTab] = useState('products');
-  
-  // Örnek ürün verisi
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Tesla Model S",
-      model: "2024",
-      serialNumber: "TS-2024-001",
-      description: "Electric luxury sedan",
-      quantity: 3,
-      price: 79999,
-      warrantyStatus: "2 Years",
-      distributor: "Tesla Motors Inc."
+  const [activeTab, setActiveTab] = useState('orders');
+  const [orders, setOrders] = useState([]);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    // LocalStorage'dan yorumları al
+    const storedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+    setReviews(storedReviews);
+  }, []);
+
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/orders/');
+        const sortedOrders = response.data.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+        setOrders(sortedOrders);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const handleOrderStatusChange = async (orderId, newStatus) => {
+    try {
+      await axios.put(`http://127.0.0.1:8000/orders/${orderId}/status`, { status: newStatus });
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.OrderID === orderId ? { ...order, Status: newStatus } : order
+        )
+      );
+    } catch (error) {
+      console.error('Error updating order status:', error);
     }
-  ]);
-
-  // Örnek sipariş verisi
-  const [orders, setOrders] = useState([
-    {
-      id: "99952",
-      customerName: "John Doe",
-      date: "2024-02-15",
-      total: 79999,
-      status: "processing",
-      items: [
-        { name: "Tesla Model S", quantity: 1, price: 79999 }
-      ]
-    }
-  ]);
-
-  // Örnek yorum verisi
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      productId: 1,
-      customerName: "Jane Smith",
-      rating: 4.5,
-      comment: "Great car, excellent performance!",
-      status: "pending"
-    }
-  ]);
-
-  // Yeni ürün ekleme state'i
-  const [newProduct, setNewProduct] = useState({
-    name: '',
-    model: '',
-    serialNumber: '',
-    description: '',
-    quantity: 0,
-    price: 0,
-    warrantyStatus: '',
-    distributor: ''
-  });
-
-  // Form handler'ları
-  const handleProductSubmit = (e) => {
-    e.preventDefault();
-    setProducts([...products, { ...newProduct, id: products.length + 1 }]);
-    setNewProduct({
-      name: '',
-      model: '',
-      serialNumber: '',
-      description: '',
-      quantity: 0,
-      price: 0,
-      warrantyStatus: '',
-      distributor: ''
-    });
   };
 
-  const handleOrderStatusChange = (orderId, newStatus) => {
-    setOrders(orders.map(order =>
-      order.id === orderId ? { ...order, status: newStatus } : order
-    ));
-  };
 
-  const handleReviewApproval = (reviewId) => {
-    setReviews(reviews.map(review =>
-      review.id === reviewId ? { ...review, status: 'approved' } : review
-    ));
-  };
+
 
   return (
     <div className="admin-container">
       <nav className="admin-nav">
         <div className="nav-tabs">
-          <button
-            className={`nav-tab ${activeTab === 'products' ? 'active' : ''}`}
-            onClick={() => setActiveTab('products')}
-          >
-            Products
-          </button>
           <button
             className={`nav-tab ${activeTab === 'orders' ? 'active' : ''}`}
             onClick={() => setActiveTab('orders')}
@@ -112,121 +64,18 @@ const Admin = () => {
       </nav>
 
       <main className="admin-content">
-        {activeTab === 'products' && (
-          <div className="products-section">
-            <h2>Add New Product</h2>
-            <form onSubmit={handleProductSubmit} className="product-form">
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Name</label>
-                  <input
-                    type="text"
-                    value={newProduct.name}
-                    onChange={e => setNewProduct({...newProduct, name: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Model</label>
-                  <input
-                    type="text"
-                    value={newProduct.model}
-                    onChange={e => setNewProduct({...newProduct, model: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Serial Number</label>
-                  <input
-                    type="text"
-                    value={newProduct.serialNumber}
-                    onChange={e => setNewProduct({...newProduct, serialNumber: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Price</label>
-                  <input
-                    type="number"
-                    value={newProduct.price}
-                    onChange={e => setNewProduct({...newProduct, price: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Description</label>
-                <textarea
-                  value={newProduct.description}
-                  onChange={e => setNewProduct({...newProduct, description: e.target.value})}
-                  required
-                />
-              </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Quantity in Stock</label>
-                  <input
-                    type="number"
-                    value={newProduct.quantity}
-                    onChange={e => setNewProduct({...newProduct, quantity: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Warranty Status</label>
-                  <input
-                    type="text"
-                    value={newProduct.warrantyStatus}
-                    onChange={e => setNewProduct({...newProduct, warrantyStatus: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Distributor Information</label>
-                <input
-                  type="text"
-                  value={newProduct.distributor}
-                  onChange={e => setNewProduct({...newProduct, distributor: e.target.value})}
-                  required
-                />
-              </div>
-              <button type="submit" className="submit-btn">Add Product</button>
-            </form>
-
-            <h2>Current Products</h2>
-            <div className="products-list">
-              {products.map(product => (
-                <div key={product.id} className="product-card">
-                  <h3>{product.name}</h3>
-                  <div className="product-details">
-                    <p><strong>Model:</strong> {product.model}</p>
-                    <p><strong>Serial Number:</strong> {product.serialNumber}</p>
-                    <p><strong>Price:</strong> ${product.price}</p>
-                    <p><strong>Stock:</strong> {product.quantity}</p>
-                    <p><strong>Warranty:</strong> {product.warrantyStatus}</p>
-                    <p><strong>Distributor:</strong> {product.distributor}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {activeTab === 'orders' && (
           <div className="orders-section">
             <h2>Order Management</h2>
             <div className="orders-list">
-              {orders.map(order => (
-                <div key={order.id} className="order-card">
+              {orders.map((order) => (
+                <div key={order.OrderID} className="order-card">
                   <div className="order-header">
-                    <h3>Order #{order.id}</h3>
+                    <h3>Order #{order.OrderID}</h3>
                     <select
-                      value={order.status}
-                      onChange={(e) => handleOrderStatusChange(order.id, e.target.value)}
-                      className={`status-select ${order.status}`}
+                      value={order.Status}
+                      onChange={(e) => handleOrderStatusChange(order.OrderID, e.target.value)}
+                      className={`status-select ${order.Status.toLowerCase().replace(' ', '-')}`}
                     >
                       <option value="processing">Processing</option>
                       <option value="in-transit">In Transit</option>
@@ -234,18 +83,22 @@ const Admin = () => {
                     </select>
                   </div>
                   <div className="order-details">
-                    <p><strong>Customer:</strong> {order.customerName}</p>
-                    <p><strong>Date:</strong> {order.date}</p>
-                    <p><strong>Total:</strong> ${order.total}</p>
+                    <p><strong>Customer:</strong> {order.Customer}</p>
+                    <p><strong>Date:</strong> {order.Date}</p>
+                    <p><strong>Total:</strong> ${order.Total.toFixed(2)}</p>
                     <div className="order-items">
                       <h4>Items:</h4>
-                      {order.items.map((item, index) => (
-                        <div key={index} className="order-item">
-                          <span>{item.name}</span>
-                          <span>x{item.quantity}</span>
-                          <span>${item.price}</span>
+                      <div className="order-item">
+                        <img
+                          src={`http://127.0.0.1:8000/products/${order.productId}/photo`}
+                          alt={order.Content}
+                          className="item-image"
+                        />
+                        <div className="item-details">
+                          <span><strong>Product:</strong> {order.Content}</span>
+                          <span><strong>Price:</strong> ${order.Total}</span>
                         </div>
-                      ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -257,31 +110,37 @@ const Admin = () => {
         {activeTab === 'reviews' && (
           <div className="reviews-section">
             <h2>Review Management</h2>
+            <div className="reviews-status-tabs">
+              <button
+                className="status-tab active"
+                onClick={() => console.log('Pending Reviews Tab')}
+              >
+                Pending Reviews
+              </button>
+              <button
+                className="status-tab"
+                onClick={() => console.log('Approved Reviews Tab')}
+              >
+                Approved Reviews
+              </button>
+              <button
+                className="status-tab"
+                onClick={() => console.log('Rejected Reviews Tab')}
+              >
+                Rejected Reviews
+              </button>
+            </div>
             <div className="reviews-list">
-              {reviews.map(review => (
-                <div key={review.id} className="review-card">
-                  <div className="review-header">
-                    <h3>{review.customerName}</h3>
-                    <div className="review-rating">
-                      {'★'.repeat(Math.floor(review.rating))}
-                      {'☆'.repeat(5 - Math.floor(review.rating))}
-                      <span>({review.rating})</span>
-                    </div>
-                  </div>
-                  <p className="review-comment">{review.comment}</p>
-                  {review.status === 'pending' && (
-                    <button
-                      onClick={() => handleReviewApproval(review.id)}
-                      className="approve-btn"
-                    >
-                      Approve Review
-                    </button>
-                  )}
-                  <span className={`review-status ${review.status}`}>
-                    {review.status.charAt(0).toUpperCase() + review.status.slice(1)}
-                  </span>
-                </div>
-              ))}
+              <h2>Reviews</h2>
+              <ul>
+                {reviews.map((review, index) => (
+                  <li key={index}>
+                    <strong>Rating:</strong> {review.rating} <br />
+                    <strong>Comment:</strong> {review.comment} <br />
+                    <strong>Status:</strong> {review.status}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         )}
