@@ -33,6 +33,11 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
+
+
+
+
+
   const handleAddToCart = () => {
     if (product.Stock === 0) {
       alert('This product is out of stock');
@@ -57,19 +62,27 @@ const ProductDetail = () => {
     alert('Added to cart successfully!');
   };
 
-  const handleSubmitReview = async (e) => {
+
+  const handleSubmitReview = (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://127.0.0.1:8000/products/${id}/reviews`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ rating: userRating, comment: newReview, status: 'pending' }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to submit review');
-      }
+      const review = {
+        rating: userRating, // integer
+        comment: newReview, // string
+        status: 'pending'   // string
+      };
+  
+      console.log("Payload:", review);
+  
+      // Önceki yorumları al
+      const existingReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+  
+      // Yeni yorumu ekle
+      const updatedReviews = [...existingReviews, review];
+  
+      // Güncellenmiş yorumları kaydet
+      localStorage.setItem('reviews', JSON.stringify(updatedReviews));
+  
       alert('Your review has been submitted for admin approval.');
       setNewReview('');
       setUserRating(0);
@@ -79,6 +92,16 @@ const ProductDetail = () => {
       alert('Failed to submit review. Please try again.');
     }
   };
+  
+
+
+
+  
+
+  
+  
+
+
 
 
 
