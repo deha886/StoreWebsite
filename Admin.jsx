@@ -42,6 +42,27 @@ const Admin = () => {
   };
 
 
+  const handleApprove = (index) => {
+    const updatedReviews = [...reviews];
+    updatedReviews[index].status = 'Approved';
+
+    // Güncellenmiş yorumları kaydet
+    localStorage.setItem('reviews', JSON.stringify(updatedReviews));
+    setReviews(updatedReviews);
+
+    alert('Review approved.');
+  };
+
+  const handleReject = (index) => {
+    const updatedReviews = [...reviews];
+    updatedReviews[index].status = 'Rejected';
+
+    // Güncellenmiş yorumları kaydet
+    localStorage.setItem('reviews', JSON.stringify(updatedReviews));
+    setReviews(updatedReviews);
+
+    alert('Review rejected.');
+  };
 
 
   return (
@@ -138,6 +159,8 @@ const Admin = () => {
                     <strong>Rating:</strong> {review.rating} <br />
                     <strong>Comment:</strong> {review.comment} <br />
                     <strong>Status:</strong> {review.status}
+                    <button onClick={() => handleApprove(index)}>Approve</button>
+                    <button onClick={() => handleReject(index)}>Reject</button>
                   </li>
                 ))}
               </ul>
@@ -149,4 +172,4 @@ const Admin = () => {
   );
 };
 
-export default Admin; 
+export default Admin;
