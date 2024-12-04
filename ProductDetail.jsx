@@ -69,7 +69,7 @@ const ProductDetail = () => {
       const review = {
         rating: userRating, // integer
         comment: newReview, // string
-        status: 'pending'   // string
+        status: 'Pending'   // string
       };
   
       console.log("Payload:", review);
@@ -247,6 +247,7 @@ const ProductDetail = () => {
               <p className="review-comment">{review.comment}</p>
             </div>
           ))}
+          <button onClick={() => navigate("/main")} className="back-to-store-btn">Back to Store</button>
         </div>
       </div>
     </div>
