@@ -1,171 +1,230 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Cart.css';
+import React, { useEffect, useState } from "react";
+import "./Cart.css";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Cart = () => {
+  const [cartItems, setCartItems] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showPayment, setShowPayment] = useState(false);
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
 
-  const [paymentInfo, setPaymentInfo] = useState({
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    nameOnCard: ''
-  });
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    setCurrentUser(user);
 
-  const handleQuantityChange = (id, change) => {
-    setCartItems(items => 
-      items.map(item => 
-        item.id === id 
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      )
-    );
-    updateLocalStorage(cartItems);
-  };
+    const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    setCartItems(savedCart);
 
-  const removeItem = (id) => {
-    const newItems = cartItems.filter(item => item.id !== id);
-    setCartItems(newItems);
-    updateLocalStorage(newItems);
-  };
-
-  const updateLocalStorage = (items) => {
-    localStorage.setItem('cart', JSON.stringify(items));
-  };
-
-  const handlePaymentSubmit = (e) => {
-    e.preventDefault();
-    alert('Payment successful!');
-    setCartItems([]);
-    localStorage.removeItem('cart');
-    navigate('/');
-  };
-
-  const calculateTotal = () => {
-    const subtotal = cartItems.reduce((sum, item) => {
-      const price = parseFloat(item.price.replace('$', '').replace(',', ''));
-      return sum + price * item.quantity;
+    const totalPrice = savedCart.reduce((acc, item) => {
+      const price = parseFloat(item?.Prices || 0);
+      const quantity = parseInt(item?.quantity || 0, 10);
+      return acc + price * quantity;
     }, 0);
-    const tax = subtotal * 0.1;
-    return { subtotal, tax, total: subtotal + tax };
+
+    setTotal(totalPrice.toFixed(2));
+  }, []);
+
+  const updateStock = async (productId, newStock) => {
+    try {
+      const response = await axios.put(
+        `http://127.0.0.1:8000/products/${productId}/stock`,
+        null,
+        {
+          params: { stock: newStock },
+        }
+      );
+      console.log(`Stock updated for product ${productId}:`, response.data);
+    } catch (error) {
+      console.error(
+        `Error updating stock for product ${productId}:`,
+        error.response?.data || error.message
+      );
+    }
   };
 
-  const { subtotal, tax, total } = calculateTotal();
+  const handleProceedToCheckout = () => {
+    if (!currentUser || currentUser.rank === 0) {
+      alert("You must be logged in to proceed to checkout.");
+      navigate("/login");
+    } else {
+      setShowPayment(true);
+    }
+  };
+
+  const handleConfirmPayment = async (e) => {
+    e.preventDefault();
+
+    try {
+      const orders = [];
+      for (const item of cartItems) {
+        // Fetch the current stock for the product
+        const stockResponse = await axios.get(
+          `http://127.0.0.1:8000/products/${item.objectId}/stock`
+        );
+        const currentStock = stockResponse.data.stock;
+
+        // Calculate the new stock for this specific product
+        const quantity = item.quantity || 1; // Default to 1 if quantity is not set
+        const newStock = currentStock - quantity;
+
+        if (newStock < 0) {
+          // If stock is insufficient, alert the user and stop the process
+          alert(
+            `Insufficient stock for ${item.Make} ${item.Model}. Available stock: ${currentStock}`
+          );
+          return; // Exit the function without proceeding
+        }
+
+        // Update the stock for the specific product
+        await updateStock(item.objectId, newStock);
+
+        // Create the order for this item
+        const orderId = `${currentUser.username}-${item.objectId}-${Date.now()}`;
+        const orderData = {
+          OrderID: orderId,
+          Customer: currentUser.username,
+          Content: `${item.Make} ${item.Model}`,
+          Date: new Date().toISOString().split("T")[0],
+          Status: "Processing",
+          Total: parseFloat(item.Prices) * quantity, // Calculate total price per product
+          productId: item.objectId,
+        };
+
+        await axios.post("http://127.0.0.1:8000/orders/", orderData);
+        orders.push({ ...orderData, quantity });
+      }
+
+      // Save the orders to localStorage for use on the InvoicePage
+      localStorage.setItem("currentOrders", JSON.stringify(orders));
+
+      // Clear the cart and redirect to the invoice page after successful payment
+      localStorage.removeItem("cart");
+      alert("Payment successful! Redirecting to the invoice...");
+      navigate("/invoice");
+    } catch (error) {
+      console.error("Error during payment process:", error);
+      alert("Payment failed. Please try again.");
+    }
+  };
+
+  const handleRemoveItem = (itemId) => {
+    const updatedCart = cartItems.filter((item) => item.objectId !== itemId);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setCartItems(updatedCart);
+
+    const totalPrice = updatedCart.reduce((acc, item) => {
+      const price = parseFloat(item?.Prices || 0);
+      const quantity = parseInt(item?.quantity || 0, 10);
+      return acc + price * quantity;
+    }, 0);
+
+    setTotal(totalPrice.toFixed(2));
+  };
 
   return (
     <div className="cart-container">
-      <h1 className="cart-title">Your Cart</h1>
-      
-      <div className="cart-content">
+      <h1 className="cart-title">Shopping Cart</h1>
+
+      {cartItems.length === 0 ? (
+        <p className="cart-empty">Your cart is empty. Start shopping!</p>
+      ) : (
         <div className="cart-items">
-          {cartItems.length === 0 ? (
-            <p className="empty-cart">Your cart is empty</p>
-          ) : (
-            cartItems.map(item => (
-              <div key={item.id} className="cart-item">
-                <img src={item.image} alt={item.title} className="item-image" />
-                <div className="item-details">
-                  <h3>{item.title}</h3>
-                  <p>{item.price}</p>
-                  <div className="quantity-controls">
-                    <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
-                  </div>
-                  <button onClick={() => removeItem(item.id)} className="remove-btn">
-                    Remove
-                  </button>
-                </div>
+          {cartItems.map((item) => (
+            <div key={item.objectId} className="cart-item">
+              <div className="cart-item-image">
+                <img
+                  src={item?.Photo || "/placeholder.png"}
+                  alt={item?.Model || "Product"}
+                />
               </div>
-            ))
-          )}
-        </div>
-
-        {cartItems.length > 0 && (
-          <div className="checkout-section">
-            <div className="total-section">
-              <h2>Order Summary</h2>
-              <div className="total-row">
-                <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="total-row">
-                <span>Tax (10%):</span>
-                <span>${tax.toFixed(2)}</span>
-              </div>
-              <div className="total-row total">
-                <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
-              </div>
-            </div>
-
-            <div className="payment-section">
-              <h2>Payment Details</h2>
-              <form onSubmit={handlePaymentSubmit} className="payment-form">
-                <div className="form-group">
-                  <label>Card Number</label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="1234 5678 9012 3456"
-                    maxLength="19"
-                    onChange={(e) => setPaymentInfo({
-                      ...paymentInfo,
-                      cardNumber: e.target.value
-                    })}
-                  />
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Expiry Date</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="MM/YY"
-                      maxLength="5"
-                      onChange={(e) => setPaymentInfo({
-                        ...paymentInfo,
-                        expiryDate: e.target.value
-                      })}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>CVV</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="123"
-                      maxLength="3"
-                      onChange={(e) => setPaymentInfo({
-                        ...paymentInfo,
-                        cvv: e.target.value
-                      })}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Name on Card</label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="John Doe"
-                    onChange={(e) => setPaymentInfo({
-                      ...paymentInfo,
-                      nameOnCard: e.target.value
-                    })}
-                  />
-                </div>
-                <button type="submit" className="checkout-button">
-                  Complete Purchase
+              <div className="cart-item-details">
+                <h3 className="cart-item-title">
+                  {item?.Make || "Unknown"} {item?.Model || ""}
+                </h3>
+                <p className="cart-item-category">
+                  {item?.Category || "Unknown Category"}
+                </p>
+                <p className="cart-item-price">
+                  Price: ${parseFloat(item?.Prices || 0).toFixed(2)}
+                </p>
+                <p className="cart-item-quantity">
+                  Quantity: {item?.quantity || 1}
+                </p>
+                <p className="cart-item-total">
+                  Total: $
+                  {(
+                    (parseFloat(item?.Prices || 0) || 0) *
+                    (parseInt(item?.quantity || 0, 10) || 1)
+                  ).toFixed(2)}
+                </p>
+                <button
+                  onClick={() => handleRemoveItem(item.objectId)}
+                  className="remove-item-btn"
+                >
+                  Remove
                 </button>
-              </form>
+              </div>
             </div>
+          ))}
+        </div>
+      )}
+
+      <div className="cart-summary">
+        <h2 className="cart-summary-title">Cart Summary</h2>
+        <p className="cart-summary-total">Total: ${total}</p>
+        {cartItems.length > 0 && !showPayment && (
+          <button
+            onClick={handleProceedToCheckout}
+            className="checkout-btn"
+          >
+            Proceed to Checkout
+          </button>
+        )}
+        {cartItems.length > 0 && showPayment && (
+          <div className="payment-section">
+            <h2>Payment Details</h2>
+            <form onSubmit={handleConfirmPayment}>
+              <div className="form-group">
+                <label htmlFor="card-number">Card Number</label>
+                <input
+                  type="text"
+                  id="card-number"
+                  placeholder="XXXX-XXXX-XXXX-XXXX"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="expiry-date">Expiry Date</label>
+                <input
+                  type="text"
+                  id="expiry-date"
+                  placeholder="MM/YY"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="cvv">CVV</label>
+                <input
+                  type="text"
+                  id="cvv"
+                  placeholder="XXX"
+                  required
+                />
+              </div>
+              <button type="submit" className="confirm-payment-btn">
+                Confirm Payment
+              </button>
+            </form>
           </div>
         )}
+        <button
+          onClick={() => navigate("/main")}
+          className="back-to-store-btn"
+        >
+          Back to Store
+        </button>
       </div>
     </div>
   );
