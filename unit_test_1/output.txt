@@ -1,0 +1,337 @@
+User empty_user added successfully!
+FUser large_user added successfully!
+FUser missing_field_user added successfully!
+FUser special_user added successfully!
+FUser valid_user added successfully!
+FEUser network_error_user deleted successfully!
+FUser nonexistent_user deleted successfully!
+FUser None deleted successfully!
+FUser valid_user deleted successfully!
+FUser None added successfully!
+FUser user!@# deleted successfully!
+FFUser xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx added successfully!
+F.FFF.FE..EE
+======================================================================
+ERROR test_delete_user_empty_id (test_firestore_setup.TestFirestoreSetup.test_delete_user_empty_id)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 136, in test_delete_user_empty_id
+    delete_user()
+  File CUsersASUSPycharmProjectsFirebasefirestore_setup.py, line 41, in delete_user
+    doc_ref.delete()
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1document.py, line 353, in delete
+    commit_response = self._client._firestore_api.commit(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1servicesfirestoreclient.py, line 1372, in commit
+    response = rpc(
+               ^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coregapic_v1method.py, line 131, in __call__
+    return wrapped_func(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 293, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 153, in retry_target
+    _retry_error_helper(
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_base.py, line 212, in _retry_error_helper
+    raise final_exc from source_exc
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 144, in retry_target
+    result = target()
+             ^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coretimeout.py, line 120, in func_with_timeout
+    return func(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coregrpc_helpers.py, line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument 400 Document name projectscs308-unittestingdatabases(default)documentsusers has invalid trailing .        
+
+======================================================================
+ERROR test_update_user_invalid_field (test_firestore_setup.TestFirestoreSetup.test_update_user_invalid_field)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 100, in test_update_user_invalid_field
+    update_user(user_id, updated_data)
+  File CUsersASUSPycharmProjectsFirebasefirestore_setup.py, line 35, in update_user
+    doc_ref.update(user_data)
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1document.py, line 324, in update
+    write_results = batch.commit(kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1batch.py, line 59, in commit
+    commit_response = self._client._firestore_api.commit(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1servicesfirestoreclient.py, line 1372, in commit
+    response = rpc(
+               ^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coregapic_v1method.py, line 131, in __call__
+    return wrapped_func(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 293, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 153, in retry_target
+    _retry_error_helper(
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_base.py, line 212, in _retry_error_helper
+    raise final_exc from source_exc
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 144, in retry_target
+    result = target()
+             ^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coretimeout.py, line 120, in func_with_timeout
+    return func(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coregrpc_helpers.py, line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.NotFound 404 No document to update projectscs308-unittestingdatabases(default)documentsusersinvalid_field_user
+
+======================================================================
+ERROR test_update_user_partial_update (test_firestore_setup.TestFirestoreSetup.test_update_user_partial_update)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 106, in test_update_user_partial_update
+    update_user(user_id, updated_data)
+  File CUsersASUSPycharmProjectsFirebasefirestore_setup.py, line 35, in update_user
+    doc_ref.update(user_data)
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1document.py, line 324, in update
+    write_results = batch.commit(kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1batch.py, line 59, in commit
+    commit_response = self._client._firestore_api.commit(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1servicesfirestoreclient.py, line 1372, in commit
+    response = rpc(
+               ^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coregapic_v1method.py, line 131, in __call__
+    return wrapped_func(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 293, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 153, in retry_target
+    _retry_error_helper(
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_base.py, line 212, in _retry_error_helper
+    raise final_exc from source_exc
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 144, in retry_target
+    result = target()
+             ^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coretimeout.py, line 120, in func_with_timeout
+    return func(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coregrpc_helpers.py, line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.NotFound 404 No document to update projectscs308-unittestingdatabases(default)documentsuserspartial_update_user
+
+======================================================================
+ERROR test_update_user_valid_data (test_firestore_setup.TestFirestoreSetup.test_update_user_valid_data)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 89, in test_update_user_valid_data
+    update_user(user_id, updated_data)
+  File CUsersASUSPycharmProjectsFirebasefirestore_setup.py, line 35, in update_user
+    doc_ref.update(user_data)
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1document.py, line 324, in update
+    write_results = batch.commit(kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1batch.py, line 59, in commit
+    commit_response = self._client._firestore_api.commit(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgooglecloudfirestore_v1servicesfirestoreclient.py, line 1372, in commit
+    response = rpc(
+               ^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coregapic_v1method.py, line 131, in __call__
+    return wrapped_func(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 293, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 153, in retry_target
+    _retry_error_helper(
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_base.py, line 212, in _retry_error_helper
+    raise final_exc from source_exc
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coreretryretry_unary.py, line 144, in retry_target
+    result = target()
+             ^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coretimeout.py, line 120, in func_with_timeout
+    return func(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File CUsersASUSPycharmProjectsFirebase.venvLibsite-packagesgoogleapi_coregrpc_helpers.py, line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.NotFound 404 No document to update projectscs308-unittestingdatabases(default)documentsusersvalid_user
+
+======================================================================
+FAIL test_add_user_empty_data (test_firestore_setup.TestFirestoreSetup.test_add_user_empty_data)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 35, in test_add_user_empty_data
+    self.mock_collection.document.assert_called_with(user_id)
+  File CUsersASUSAppDataLocalProgramsPythonPython312Libunittestmock.py, line 935, in assert_called_with
+    raise AssertionError(error_message)
+AssertionError expected call not found.
+Expected document('empty_user')
+Actual not called.
+
+======================================================================
+FAIL test_add_user_large_payload (test_firestore_setup.TestFirestoreSetup.test_add_user_large_payload)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 48, in test_add_user_large_payload
+    self.mock_collection.document.assert_called_with(user_id)
+  File CUsersASUSAppDataLocalProgramsPythonPython312Libunittestmock.py, line 935, in assert_called_with
+    raise AssertionError(error_message)
+AssertionError expected call not found.
+Expected document('large_user')
+Actual not called.
+
+======================================================================
+FAIL test_add_user_missing_field (test_firestore_setup.TestFirestoreSetup.test_add_user_missing_field)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 55, in test_add_user_missing_field
+    self.mock_document.set.assert_called_with(user_data)
+  File CUsersASUSAppDataLocalProgramsPythonPython312Libunittestmock.py, line 935, in assert_called_with
+    raise AssertionError(error_message)
+AssertionError expected call not found.
+Expected set({'name' 'Missing Email'})
+Actual not called.
+
+======================================================================
+FAIL test_add_user_special_characters (test_firestore_setup.TestFirestoreSetup.test_add_user_special_characters)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 42, in test_add_user_special_characters
+    self.mock_document.set.assert_called_with(user_data)
+  File CUsersASUSAppDataLocalProgramsPythonPython312Libunittestmock.py, line 935, in assert_called_with
+    raise AssertionError(error_message)
+AssertionError expected call not found.
+Expected set({'name' 'Name #@!', 'email' 'email@domain.com'})
+Actual not called.
+
+======================================================================
+FAIL test_add_user_valid_data (test_firestore_setup.TestFirestoreSetup.test_add_user_valid_data)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 28, in test_add_user_valid_data
+    self.mock_collection.document.assert_called_with(user_id)
+  File CUsersASUSAppDataLocalProgramsPythonPython312Libunittestmock.py, line 935, in assert_called_with
+    raise AssertionError(error_message)
+AssertionError expected call not found.
+Expected document('valid_user')
+Actual not called.
+
+======================================================================
+FAIL test_delete_user_network_error (test_firestore_setup.TestFirestoreSetup.test_delete_user_network_error)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 127, in test_delete_user_network_error
+    with self.assertRaises(Exception)
+AssertionError Exception not raised
+
+======================================================================
+FAIL test_delete_user_nonexistent_user (test_firestore_setup.TestFirestoreSetup.test_delete_user_nonexistent_user)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 122, in test_delete_user_nonexistent_user
+    with self.assertRaises(Exception)
+AssertionError Exception not raised
+
+======================================================================
+FAIL test_delete_user_null_id (test_firestore_setup.TestFirestoreSetup.test_delete_user_null_id)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 131, in test_delete_user_null_id
+    with self.assertRaises(TypeError)
+AssertionError TypeError not raised
+
+======================================================================
+FAIL test_delete_user_valid_user (test_firestore_setup.TestFirestoreSetup.test_delete_user_valid_user)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 118, in test_delete_user_valid_user
+    self.mock_document.delete.assert_called_once()
+  File CUsersASUSAppDataLocalProgramsPythonPython312Libunittestmock.py, line 923, in assert_called_once
+    raise AssertionError(msg)
+AssertionError Expected 'delete' to have been called once. Called 0 times.
+
+======================================================================
+FAIL test_edge_case_add_null_user_id (test_firestore_setup.TestFirestoreSetup.test_edge_case_add_null_user_id)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 140, in test_edge_case_add_null_user_id
+    with self.assertRaises(TypeError)
+AssertionError TypeError not raised
+
+======================================================================
+FAIL test_edge_case_delete_special_id (test_firestore_setup.TestFirestoreSetup.test_edge_case_delete_special_id)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 156, in test_edge_case_delete_special_id
+    self.mock_document.delete.assert_called_once()
+  File CUsersASUSAppDataLocalProgramsPythonPython312Libunittestmock.py, line 923, in assert_called_once
+    raise AssertionError(msg)
+AssertionError Expected 'delete' to have been called once. Called 0 times.
+
+======================================================================
+FAIL test_edge_case_get_special_id (test_firestore_setup.TestFirestoreSetup.test_edge_case_get_special_id)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 151, in test_edge_case_get_special_id
+    self.assertEqual(user_data, {name Test User, email test@example.com})
+AssertionError None != {'name' 'Test User', 'email' 'test@example.com'}
+
+======================================================================
+FAIL test_edge_case_large_user_id (test_firestore_setup.TestFirestoreSetup.test_edge_case_large_user_id)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 161, in test_edge_case_large_user_id
+    self.mock_collection.document.assert_called_with(user_id)
+  File CUsersASUSAppDataLocalProgramsPythonPython312Libunittestmock.py, line 935, in assert_called_with
+    raise AssertionError(error_message)
+AssertionError expected call not found.
+Expected document('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+Actual not called.
+
+======================================================================
+FAIL test_get_user_api_failure (test_firestore_setup.TestFirestoreSetup.test_get_user_api_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 75, in test_get_user_api_failure
+    with self.assertRaises(Exception)
+AssertionError Exception not raised
+
+======================================================================
+FAIL test_get_user_exists (test_firestore_setup.TestFirestoreSetup.test_get_user_exists)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 60, in test_get_user_exists
+    self.assertEqual(user_data, {name Test User, email test@example.com})
+AssertionError None != {'name' 'Test User', 'email' 'test@example.com'}
+
+======================================================================
+FAIL test_get_user_large_document (test_firestore_setup.TestFirestoreSetup.test_get_user_large_document)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 71, in test_get_user_large_document
+    self.assertEqual(user_data, large_data)
+AssertionError {'bio' 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx[9985 chars]ser'} != {'field' 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx[99965 chars]xxx'}
+Diff is 110055 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL test_get_user_null_field (test_firestore_setup.TestFirestoreSetup.test_get_user_null_field)
+----------------------------------------------------------------------
+Traceback (most recent call last)
+  File CUsersASUSPycharmProjectsFirebasetest_firestore_setup.py, line 83, in test_get_user_null_field
+    self.assertEqual(user_data, {name None, email test@example.com})
+AssertionError None != {'name' None, 'email' 'test@example.com'}
+
+----------------------------------------------------------------------
+Ran 25 tests in 3.855s
+
+FAILED (failures=17, errors=4)
